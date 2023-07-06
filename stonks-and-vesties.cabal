@@ -25,6 +25,8 @@ source-repository head
 
 library
   exposed-modules:
+      Data.Report
+      Data.SchwabExport
       Lib
   other-modules:
       Paths_stonks_and_vesties
@@ -33,7 +35,16 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , cassava
+    , containers
+    , generic-monoid
+    , monoidal-containers
     , pandoc
+    , pandoc-types
+    , safe-money
+    , text
+    , vector
   default-language: Haskell2010
 
 executable stonks-and-vesties-exe
@@ -45,8 +56,17 @@ executable stonks-and-vesties-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , cassava
+    , containers
+    , generic-monoid
+    , monoidal-containers
     , pandoc
+    , pandoc-types
+    , safe-money
     , stonks-and-vesties
+    , text
+    , vector
   default-language: Haskell2010
 
 test-suite stonks-and-vesties-test
@@ -59,6 +79,15 @@ test-suite stonks-and-vesties-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , cassava
+    , containers
+    , generic-monoid
+    , monoidal-containers
     , pandoc
+    , pandoc-types
+    , safe-money
     , stonks-and-vesties
+    , text
+    , vector
   default-language: Haskell2010
