@@ -39,7 +39,8 @@ data SchwabExportRow =
     , action :: ExportAction
     , symbol :: Maybe Symbol
     , description :: Text
-    , quantity :: Maybe Double
+    , quantity :: Maybe Usd
+    -- ^ Silly to use USD but it makes math/fractions work
     , price :: Maybe Usd
     , feesAndComm :: Maybe Usd
     , amount :: Maybe Usd
@@ -52,7 +53,7 @@ instance FromNamedRecord SchwabExportRow where
       <*> v .: "Action"
       <*> v .: "Symbol"
       <*> v .: "Description"
-      <*> v .: "Quantity"
+      <*> (fmap unSchwabBucks <$> v .: "Quantity")
       <*> (fmap unSchwabBucks <$> v .: "Price")
       <*> (fmap unSchwabBucks <$> v .: "Fees & Comm")
       <*> (fmap unSchwabBucks <$> v .: "Amount")

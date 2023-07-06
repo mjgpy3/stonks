@@ -3,7 +3,14 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: safe-money-aeson-0.1.1@sha256:d7383134649d5e63177731f3b5a0ff1992a1d4edf9d224178b264eb4fcdd6c14,1405
+    pantry-tree:
+      sha256: c5d74f991f75d978c4a0bf080adfcd0c46baceaa2d1d062f3f1cfe91b696549c
+      size: 374
+  original:
+    hackage: safe-money-aeson-0.1.1
 snapshots:
 - completed:
     sha256: c4381351ba5837a6356fcc0ebeb7a61fdcaf3a085c903a6f730f56b131d5cb58

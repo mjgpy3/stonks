@@ -25,12 +25,17 @@ dependencies:
 - pandoc-types
 - cassava
 - safe-money
+- safe-money-aeson
 - text
 - monoidal-containers
 - generic-monoid
 - containers
 - vector
 - bytestring
+- wreq
+- aeson
+- lens-aeson
+- lens
 
 ghc-options:
 - -Wall
