@@ -3,13 +3,15 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE TupleSections #-}
 
-module Data.Report (Report(..), rowToReport, summarizeSymbols) where
+module Data.Report (Report(..), rowToReport, summarizeSymbols, fillMarketValues) where
 
 import Data.SchwabExport (SchwabExportRow(..), ExportAction(..), Symbol, Usd)
 import Data.Text (Text)
 import Data.Monoid (Sum(..), First(..))
 import Data.HashMap.Monoidal
+import qualified Data.Map.Strict as M
 import qualified Data.HashMap.Monoidal as HMM
 import Numeric.Natural
 import Data.Monoid.Generic (genericMempty, genericMappend)
@@ -18,6 +20,35 @@ import Data.Semigroup (Min(..), Max(..))
 import Data.Foldable (foldl')
 import GHC.Generics (Generic)
 import qualified Data.Set as S
+
+fillMarketValues :: M.Map Symbol Usd -> Report SymbolDetails -> Report SymbolDetails
+fillMarketValues market report@Report{..} =
+  report {
+    holdings = addMarket holdings
+    , gifts = addMarket gifts
+    , allSymbols = addMarket allSymbols
+  }
+
+  where
+    addMarketToDetail (sym, sd@SymbolDetails {..}) =
+      let
+        value = M.lookup sym market
+      in
+        (sym, sd { symbolCurrentShareValue = value
+                 , symbolCurrentTotalValue = (* symbolCurrentlyHeld) <$> value
+                 , symbolGain = (\v -> symbolCurrentlyHeld*v - symbolTotalSpent) <$> value
+        })
+
+    addMarket details@SymbolLevelReport {..} =
+      let
+        symbolsWithMarket = HMM.fromList $ addMarketToDetail <$> HMM.toList symbols
+        marketValueOfSymbols = fmap sum $ sequenceA $ symbolCurrentTotalValue <$> HMM.elems symbolsWithMarket
+      in
+        details {
+          symbols = symbolsWithMarket
+          , totalValue = First marketValueOfSymbols
+          , totalGain = First $ (\mv -> mv - getSum totalSpent) <$> marketValueOfSymbols
+        }
 
 summarizeSymbols :: Report [SymbolEvent] -> Report SymbolDetails
 summarizeSymbols report@Report{..} =
@@ -29,9 +60,11 @@ summarizeSymbols report@Report{..} =
 
   where
     summarizeDetails details@SymbolLevelReport {..} =
-      details {
-        symbols = HMM.map (foldl' summarize emptySymbolDetails) symbols
-       }
+      let
+      in
+        details {
+          symbols = HMM.map (foldl' summarize emptySymbolDetails) symbols
+        }
 
 rowToReport :: SchwabExportRow -> Report [SymbolEvent]
 rowToReport SchwabExportRow {..} =
@@ -191,6 +224,9 @@ data SymbolDetails
     -- ^ Max spent per share, at split point
     , symbolSplitTimes :: Natural
     -- ^ How many times has this split
+    , symbolCurrentShareValue :: Maybe Usd
+    , symbolCurrentTotalValue :: Maybe Usd
+    , symbolGain :: Maybe Usd
     }
   deriving (Show, Eq)
 
@@ -203,6 +239,9 @@ emptySymbolDetails = SymbolDetails {
   , symbolMinSpentPerShareAtSplit = mempty
   , symbolMaxSpentPerShareAtSplit = mempty
   , symbolSplitTimes = 0
+  , symbolCurrentShareValue = Nothing
+  , symbolCurrentTotalValue = Nothing
+  , symbolGain = Nothing
   }
 
 data Fees = Fees {

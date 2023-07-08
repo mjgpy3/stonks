@@ -47,7 +47,6 @@ library
     , pandoc
     , pandoc-types
     , safe-money
-    , safe-money-aeson
     , text
     , vector
     , wreq
@@ -73,7 +72,6 @@ executable stonks-and-vesties-exe
     , pandoc
     , pandoc-types
     , safe-money
-    , safe-money-aeson
     , stonks-and-vesties
     , text
     , vector
@@ -101,7 +99,6 @@ test-suite stonks-and-vesties-test
     , pandoc
     , pandoc-types
     , safe-money
-    , safe-money-aeson
     , stonks-and-vesties
     , text
     , vector

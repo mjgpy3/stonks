@@ -25,7 +25,6 @@ dependencies:
 - pandoc-types
 - cassava
 - safe-money
-- safe-money-aeson
 - text
 - monoidal-containers
 - generic-monoid
