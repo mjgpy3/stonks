@@ -5,7 +5,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TupleSections #-}
 
-module Data.Report (Report(..), rowToReport, summarizeSymbols, fillMarketValues) where
+module Data.Report (Report(..), SymbolDetails(..), Fees(..), DividendStats(..), BankStats(..), SymbolLevelReport(..), rowToReport, summarizeSymbols, fillMarketValues) where
 
 import Data.SchwabExport (SchwabExportRow(..), ExportAction(..), Symbol, Usd)
 import Data.Text (Text)
@@ -47,7 +47,7 @@ fillMarketValues market report@Report{..} =
         details {
           symbols = symbolsWithMarket
           , totalValue = First marketValueOfSymbols
-          , totalGain = First $ (\mv -> mv - getSum totalSpent) <$> marketValueOfSymbols
+          , totalGain = First $ (+ getSum totalSpent) <$> marketValueOfSymbols
         }
 
 summarizeSymbols :: Report [SymbolEvent] -> Report SymbolDetails
@@ -74,7 +74,7 @@ rowToReport SchwabExportRow {..} =
     Buy -> mempty { holdings = maybe mempty buy symbol, allSymbols = maybe mempty buy symbol }
     CashDividend -> mempty { dividends = dividend }
     ForeignTaxPaid -> mempty { fees = amountAsFee }
-    JournaledShares -> mempty { holdings = maybe mempty gift symbol, allSymbols = maybe mempty gift symbol }
+    JournaledShares -> mempty { gifts = maybe mempty gift symbol, allSymbols = maybe mempty gift symbol }
     MoneyLinkTransfer -> mempty { bank = moneyLinkTransfer }
     PrYrCashDiv -> mempty { dividends = dividend }
     QualifiedDividend -> mempty { dividends = dividend }

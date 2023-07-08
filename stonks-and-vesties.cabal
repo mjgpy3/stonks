@@ -27,6 +27,7 @@ library
   exposed-modules:
       Data.MarketValue
       Data.Report
+      Data.Report.Pandoc
       Data.SchwabExport
       Lib
   other-modules:
@@ -40,6 +41,7 @@ library
     , bytestring
     , cassava
     , containers
+    , data-default
     , generic-monoid
     , lens
     , lens-aeson
@@ -48,6 +50,7 @@ library
     , pandoc-types
     , safe-money
     , text
+    , time
     , vector
     , wreq
   default-language: Haskell2010
@@ -65,6 +68,7 @@ executable stonks-and-vesties-exe
     , bytestring
     , cassava
     , containers
+    , data-default
     , generic-monoid
     , lens
     , lens-aeson
@@ -74,6 +78,7 @@ executable stonks-and-vesties-exe
     , safe-money
     , stonks-and-vesties
     , text
+    , time
     , vector
     , wreq
   default-language: Haskell2010
@@ -92,6 +97,7 @@ test-suite stonks-and-vesties-test
     , bytestring
     , cassava
     , containers
+    , data-default
     , generic-monoid
     , lens
     , lens-aeson
@@ -101,6 +107,7 @@ test-suite stonks-and-vesties-test
     , safe-money
     , stonks-and-vesties
     , text
+    , time
     , vector
     , wreq
   default-language: Haskell2010

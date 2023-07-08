@@ -35,6 +35,8 @@ dependencies:
 - aeson
 - lens-aeson
 - lens
+- time
+- data-default
 
 ghc-options:
 - -Wall
