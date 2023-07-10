@@ -1,1 +1,3 @@
-# stonks-and-vesties
+# Stonks
+
+Crunch a Schwab export in Haskell
